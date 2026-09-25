@@ -105,7 +105,13 @@
       "@id": "https://sainbureau.com/tathan.html#artist",
       "name": "tathan",
       "url": "https://sainbureau.com/tathan.html",
-      "sameAs": []
+      "genre": ["alternative pop", "indie"],
+      "foundingLocation": { "@type": "Place", "name": "Newport, Wales" },
+      "sameAs": [
+        "https://www.instagram.com/tathannnnn",
+        "https://open.spotify.com/artist/02MtYbPPmiILqyRJ8ftJfV",
+        "https://tathan.bandcamp.com"
+      ]
     }
   ]
 }
@@ -715,7 +721,7 @@
      once the homepage has settled (or the moment someone opens the roster), fetch the video
      so the artist page can start straight away. skipped on data saver / slow connections. */
   (function(){
-    var VIDEOS = ["maeveroster.mp4"], done = false,
+    var VIDEOS = ["maeveroster.mp4", "tathanroster.mp4"], done = false,
         c = navigator.connection || {}, frugal = c.saveData || /(^|-)2g|3g/.test(c.effectiveType || "");
     function warm(){
       if (done || !window.fetch) return; done = true;
