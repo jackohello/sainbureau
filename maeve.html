@@ -102,11 +102,12 @@
     --pad:clamp(20px,3.6vw,44px);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{background:var(--bg)}
+  html{background:var(--bg);transition:background-color .45s ease}
   /* one single fade-in: the page waits (briefly) for the video, then everything arrives together */
-  body{transition:opacity .7s ease}
   html.js:not(.ready) body{opacity:0}
-  body.leaving{opacity:0!important;transition:opacity .38s ease}
+  html.js.ready body{animation:pagein .8s ease both}
+  @keyframes pagein{from{opacity:0}to{opacity:1}}
+  body.leaving{opacity:0!important;transition:opacity .45s ease}
 
   body{
     color:var(--fg);
@@ -126,7 +127,7 @@
   .bg{
     position:fixed;inset:0;width:100%;height:100%;
     object-fit:cover;z-index:-2;
-    opacity:0;transition:opacity .6s ease;
+    opacity:0;transition:opacity .5s ease;
     background:var(--bg);
   }
   .bg.on{opacity:1}
@@ -349,33 +350,36 @@
   "use strict";
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- background video ----------
-     safari asks for video in small chunks, and cloudflare's cache can answer those in a way
-     safari rejects (black frame + a play button). loading the file whole first sidesteps that
-     completely, in every browser. */
-  var vid = document.getElementById("bgvid"), SRC = vid.getAttribute("data-src"), revealed = false;
+  /* ---------- background video, and one single reveal ----------
+     the page stays dark until the video is actually playing and the font is ready,
+     then everything fades in together. if the video is slow, the page still arrives. */
+  var vid = document.getElementById("bgvid"), SRC = vid.getAttribute("data-src"), revealed = false,
+      videoReady = false, fontReady = !(document.fonts && document.fonts.ready);
   vid.muted = true; vid.defaultMuted = true; vid.playsInline = true;
 
   function reveal(){ if (revealed) return; revealed = true; document.documentElement.classList.add("ready"); }
+  function check(){ if (videoReady && fontReady) reveal(); }
   function tryPlay(){ var pr = vid.play(); if (pr && pr.catch) pr.catch(function(){}); }
 
-  vid.addEventListener("playing", function(){ vid.classList.add("on"); reveal(); });
-  setTimeout(reveal, reduce ? 0 : 1400);            // never keep people waiting for the video
+  vid.addEventListener("playing", function(){ vid.classList.add("on"); videoReady = true; check(); });
+  if (!fontReady) document.fonts.ready.then(function(){ fontReady = true; check(); });
+  setTimeout(reveal, reduce ? 0 : 2600);            // never keep people waiting longer than this
 
+  // safari asks for video in small chunks and cloudflare's cache can answer those in a way safari
+  // rejects (black frame + play button), so safari gets the file whole. everyone else streams it.
+  var isSafari = /^((?!chrome|chromium|crios|fxios|android|edg).)*safari/i.test(navigator.userAgent);
   function useDirect(){ vid.src = SRC; vid.load(); if (!reduce) tryPlay(); }
-  if (window.fetch && window.URL && URL.createObjectURL){
+  if (isSafari && window.fetch && window.URL && URL.createObjectURL){
     fetch(SRC).then(function(r){ if (!r.ok) throw new Error(r.status); return r.blob(); })
       .then(function(b){
         vid.src = URL.createObjectURL(b.type ? b : new Blob([b], {type:"video/mp4"}));
-        vid.load();
-        if (reduce){ vid.addEventListener("loadeddata", function(){ vid.classList.add("on"); }); }
-        else tryPlay();
+        vid.load(); if (!reduce) tryPlay();
       })
       .catch(useDirect);
   } else useDirect();
+  if (reduce) vid.addEventListener("loadeddata", function(){ vid.classList.add("on"); });
 
   if (!reduce){
-    // if a browser still holds back autoplay (low power mode etc.), start on the first touch, scroll or key
     ["pointerdown", "keydown", "scroll", "touchstart", "wheel"].forEach(function(ev){
       addEventListener(ev, function once(){ if (vid.paused && vid.src) tryPlay(); removeEventListener(ev, once); }, {passive:true});
     });
@@ -387,18 +391,23 @@
   function topH(){ document.documentElement.style.setProperty("--top-h", topEl.offsetHeight + "px"); }
   topH(); addEventListener("resize", topH);
 
-  /* ---------- fade out when leaving for another page on the site ---------- */
+  /* ---------- leaving for another page: fade through to that page's own background ---------- */
   {
+    var TONE = {"index.html":"#f0eee8", "press.html":"#f0eee8", "maeve.html":"#121210", "tathan.html":"#121210"};
     document.addEventListener("click", function(e){
       var a = e.target.closest("a"); if (!a) return;
       var href = a.getAttribute("href") || "";
       if (a.target === "_blank" || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
       if (!/\.html(#.*)?$/.test(href) || /^https?:/.test(href)) return;
       e.preventDefault();
+      var tone = TONE[href.replace(/#.*$/, "")];
+      if (tone) document.documentElement.style.backgroundColor = tone;
       document.body.classList.add("leaving");
-      setTimeout(function(){ location.href = href; }, 380);
+      setTimeout(function(){ location.href = href; }, 480);
     });
-    addEventListener("pageshow", function(e){ if (e.persisted) document.body.classList.remove("leaving"); });
+    addEventListener("pageshow", function(e){
+      if (e.persisted){ document.body.classList.remove("leaving"); document.documentElement.style.backgroundColor = ""; }
+    });
   }
 
   /* ---------- roster dropdown (same behaviour as home) ---------- */

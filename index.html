@@ -119,7 +119,8 @@
     font-weight:300 500;font-style:normal;font-display:swap;
   }
   /* fade across to the next page: native cross-fade where supported, simple fade-out elsewhere */
-  body.leaving{opacity:0!important;transition:opacity .38s ease}
+  html{background:#f0eee8;transition:background-color .45s ease}
+  body.leaving{opacity:0!important;transition:opacity .45s ease}
 
   :root{
     --bg:#f0eee8;
@@ -691,18 +692,23 @@
     }, {passive:true});
   }
 
-  /* ---------- fade out when heading to another page on the site ---------- */
+  /* ---------- leaving for another page: fade through to that page's own background ---------- */
   {
+    var TONE = {"index.html":"#f0eee8", "press.html":"#f0eee8", "maeve.html":"#121210", "tathan.html":"#121210"};
     document.addEventListener("click", function(e){
       var a = e.target.closest("a"); if (!a) return;
       var href = a.getAttribute("href") || "";
       if (a.target === "_blank" || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
       if (!/\.html(#.*)?$/.test(href) || /^https?:/.test(href)) return;
       e.preventDefault();
+      var tone = TONE[href.replace(/#.*$/, "")];
+      if (tone) document.documentElement.style.backgroundColor = tone;
       document.body.classList.add("leaving");
-      setTimeout(function(){ location.href = href; }, 380);
+      setTimeout(function(){ location.href = href; }, 480);
     });
-    addEventListener("pageshow", function(e){ if (e.persisted) document.body.classList.remove("leaving"); });
+    addEventListener("pageshow", function(e){
+      if (e.persisted){ document.body.classList.remove("leaving"); document.documentElement.style.backgroundColor = ""; }
+    });
   }
 
   /* ---------- roster dropdown ---------- */
