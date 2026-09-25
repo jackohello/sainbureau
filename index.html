@@ -711,6 +711,24 @@
     });
   }
 
+  /* ---------- warm up the artist videos in the background ----------
+     once the homepage has settled (or the moment someone opens the roster), fetch the video
+     so the artist page can start straight away. skipped on data saver / slow connections. */
+  (function(){
+    var VIDEOS = ["maeveroster.mp4"], done = false,
+        c = navigator.connection || {}, frugal = c.saveData || /(^|-)2g|3g/.test(c.effectiveType || "");
+    function warm(){
+      if (done || !window.fetch) return; done = true;
+      VIDEOS.forEach(function(v){
+        fetch(v, {cache:"force-cache", priority:"low"}).then(function(r){ return r.ok && r.blob(); }).catch(function(){});
+      });
+    }
+    if (!frugal) addEventListener("load", function(){ setTimeout(warm, 1500); });
+    ["pointerenter", "touchstart", "focusin"].forEach(function(ev){
+      var r = document.getElementById("roster"); if (r) r.addEventListener(ev, warm, {passive:true, once:true});
+    });
+  })();
+
   /* ---------- roster dropdown ---------- */
   var roster = document.getElementById("roster"),
       rBtn = roster.querySelector(".roster-btn"),

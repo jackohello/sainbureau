@@ -104,9 +104,17 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--bg);transition:background-color .45s ease}
   /* one single fade-in: the page waits (briefly) for the video, then everything arrives together */
-  html.js:not(.ready) body{opacity:0}
-  html.js.ready body{animation:pagein .8s ease both}
+  /* loading: nothing but "sain bureau", gently pulsing, until the video is ready to play.
+     then the rest of the page fades in together, with the video. */
+  html.js:not(.ready) nav,
+  html.js:not(.ready) .hero,
+  html.js:not(.ready) .info{opacity:0;pointer-events:none}
+  html.js:not(.ready) .mark{animation:pulse 1.6s ease-in-out infinite}
+  html.js.ready nav,
+  html.js.ready .hero,
+  html.js.ready .info{animation:pagein 1s ease both}
   @keyframes pagein{from{opacity:0}to{opacity:1}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.28}}
   body.leaving{opacity:0!important;transition:opacity .45s ease}
 
   body{
@@ -127,7 +135,7 @@
   .bg{
     position:fixed;inset:0;width:100%;height:100%;
     object-fit:cover;z-index:-2;
-    opacity:0;transition:opacity .5s ease;
+    opacity:0;transition:opacity 1s ease;
     background:var(--bg);
   }
   .bg.on{opacity:1}
@@ -350,40 +358,45 @@
   "use strict";
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- background video, and one single reveal ----------
-     the page stays dark until the video is actually playing and the font is ready,
-     then everything fades in together. if the video is slow, the page still arrives. */
+  /* ---------- background video, and the reveal ----------
+     the file is fetched whole (the homepage may already have fetched it in the background,
+     in which case this is instant), turned into a local copy, and only then played. that
+     avoids every streaming quirk: safari's chunked requests, cloudflare's cache answers,
+     android data savers. while it loads, only "sain bureau" shows, pulsing. */
   var vid = document.getElementById("bgvid"), SRC = vid.getAttribute("data-src"), revealed = false,
       videoReady = false, fontReady = !(document.fonts && document.fonts.ready);
   vid.muted = true; vid.defaultMuted = true; vid.playsInline = true;
 
   function reveal(){ if (revealed) return; revealed = true; document.documentElement.classList.add("ready"); }
   function check(){ if (videoReady && fontReady) reveal(); }
-  function tryPlay(){ var pr = vid.play(); if (pr && pr.catch) pr.catch(function(){}); }
-
-  vid.addEventListener("playing", function(){ vid.classList.add("on"); videoReady = true; check(); });
+  function ready(){ vid.classList.add("on"); videoReady = true; check(); }
   if (!fontReady) document.fonts.ready.then(function(){ fontReady = true; check(); });
-  setTimeout(reveal, reduce ? 0 : 2600);            // never keep people waiting longer than this
+  // a last resort so nobody is ever stuck on a pulsing logo (a dead connection, a blocked file)
+  setTimeout(function(){ fontReady = true; videoReady = true; check(); }, 15000);
 
-  // safari asks for video in small chunks and cloudflare's cache can answer those in a way safari
-  // rejects (black frame + play button), so safari gets the file whole. everyone else streams it.
-  var isSafari = /^((?!chrome|chromium|crios|fxios|android|edg).)*safari/i.test(navigator.userAgent);
-  function useDirect(){ vid.src = SRC; vid.load(); if (!reduce) tryPlay(); }
-  if (isSafari && window.fetch && window.URL && URL.createObjectURL){
-    fetch(SRC).then(function(r){ if (!r.ok) throw new Error(r.status); return r.blob(); })
-      .then(function(b){
-        vid.src = URL.createObjectURL(b.type ? b : new Blob([b], {type:"video/mp4"}));
-        vid.load(); if (!reduce) tryPlay();
-      })
-      .catch(useDirect);
-  } else useDirect();
-  if (reduce) vid.addEventListener("loadeddata", function(){ vid.classList.add("on"); });
+  function start(url){
+    vid.src = url; vid.load();
+    vid.addEventListener("playing", ready, {once:true});
+    vid.addEventListener("canplay", function(){
+      if (reduce){ ready(); return; }
+      var pr = vid.play();
+      // if the device refuses to autoplay at all, show the page anyway with the first frame
+      if (pr && pr.catch) pr.catch(function(){ ready(); });
+    }, {once:true});
+    vid.addEventListener("error", function(){ videoReady = true; check(); }, {once:true});
+  }
+  if (window.fetch && window.URL && URL.createObjectURL){
+    fetch(SRC, {cache:"force-cache"})
+      .then(function(r){ if (!r.ok) throw new Error(r.status); return r.blob(); })
+      .then(function(b){ start(URL.createObjectURL(b.type ? b : new Blob([b], {type:"video/mp4"}))); })
+      .catch(function(){ start(SRC); });
+  } else start(SRC);
 
   if (!reduce){
     ["pointerdown", "keydown", "scroll", "touchstart", "wheel"].forEach(function(ev){
-      addEventListener(ev, function once(){ if (vid.paused && vid.src) tryPlay(); removeEventListener(ev, once); }, {passive:true});
+      addEventListener(ev, function once(){ if (vid.paused && vid.src) vid.play().catch(function(){}); removeEventListener(ev, once); }, {passive:true});
     });
-    document.addEventListener("visibilitychange", function(){ if (!document.hidden && vid.paused && vid.src) tryPlay(); });
+    document.addEventListener("visibilitychange", function(){ if (!document.hidden && vid.paused && vid.src) vid.play().catch(function(){}); });
   }
 
   /* ---------- first screen = exactly one screen, whatever the header's height ---------- */
