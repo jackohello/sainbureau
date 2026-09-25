@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>sain bureau // sain means sound</title>
+<meta name="description" content="sain bureau is independent artist management, based in the uk. on the roster: maeve and tathan. management, bookings and press: info@sainbureau.com" />
+<meta name="theme-color" content="#f0eee8" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<link rel="canonical" href="https://sainbureau.com/" />
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="favicon-48.png" type="image/png" sizes="48x48" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+<!-- social sharing previews (whatsapp, imessage, linkedin, x) -->
+<meta property="og:site_name" content="sain bureau" />
+<meta property="og:title" content="sain bureau // sain means sound" />
+<meta property="og:description" content="independent artist management. on the roster: maeve and tathan." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://sainbureau.com/" />
+<meta property="og:locale" content="en_GB" />
+<meta property="og:image" content="https://sainbureau.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="sain bureau: we manage artists, k?" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="sain bureau // sain means sound" />
+<meta name="twitter:description" content="independent artist management. on the roster: maeve and tathan." />
+<meta name="twitter:image" content="https://sainbureau.com/og-image.png" />
+
+<!-- structured data: tells google who we are and who we represent.
+     TODO when you have them: add each artist's official links to their "sameAs"
+     list (spotify, apple music, youtube, instagram, wikipedia/musicbrainz). that is
+     what connects this site to the artists' existing google listings. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://sainbureau.com/#org",
+      "name": "sain bureau",
+      "alternateName": "Sain Bureau",
+      "url": "https://sainbureau.com/",
+      "logo": "https://sainbureau.com/icon-512.png",
+      "slogan": "sain means sound",
+      "email": "info@sainbureau.com",
+      "description": "independent artist management, based in the uk. on the roster: maeve and tathan.",
+      "areaServed": "GB",
+      "knowsAbout": ["artist management", "music management", "maeve", "tathan"],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "management, bookings and press",
+        "email": "info@sainbureau.com",
+        "availableLanguage": ["en", "cy"]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://sainbureau.com/#website",
+      "url": "https://sainbureau.com/",
+      "name": "sain bureau",
+      "alternateName": "sain bureau // sain means sound",
+      "inLanguage": "en-GB",
+      "publisher": { "@id": "https://sainbureau.com/#org" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://sainbureau.com/#webpage",
+      "url": "https://sainbureau.com/",
+      "name": "sain bureau // sain means sound",
+      "isPartOf": { "@id": "https://sainbureau.com/#website" },
+      "about": { "@id": "https://sainbureau.com/#org" },
+      "mentions": [
+        { "@id": "https://sainbureau.com/maeve.html#artist" },
+        { "@id": "https://sainbureau.com/tathan.html#artist" }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://sainbureau.com/#roster",
+      "name": "sain bureau roster",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "url": "https://sainbureau.com/maeve.html", "name": "maeve" },
+        { "@type": "ListItem", "position": 2, "url": "https://sainbureau.com/tathan.html", "name": "tathan" }
+      ]
+    },
+    {
+      "@type": "MusicGroup",
+      "@id": "https://sainbureau.com/maeve.html#artist",
+      "name": "maeve",
+      "url": "https://sainbureau.com/maeve.html",
+      "sameAs": []
+    },
+    {
+      "@type": "MusicGroup",
+      "@id": "https://sainbureau.com/tathan.html#artist",
+      "name": "tathan",
+      "url": "https://sainbureau.com/tathan.html",
+      "sameAs": []
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#f0eee8;
+    --fg:#141410;
+    --muted:rgba(20,20,16,.48);
+    --line:rgba(20,20,16,.14);
+    --ink:#141410;          /* squiggle colour */
+    --hot:#ff4d1f;          /* accent squiggle */
+    --ease:cubic-bezier(.16,1,.3,1);
+    --pad:clamp(20px,3.6vw,44px);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-weight:400;
+    font-size:15px;
+    text-transform:lowercase;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    min-height:100dvh;
+    padding:var(--pad);
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  a{color:inherit;text-decoration:none}
+
+  /* ================= squiggle layer ================= */
+  #trail{
+    position:fixed; inset:0;
+    width:100%; height:100%;
+    pointer-events:none; z-index:1;
+  }
+
+  .doodle{
+    position:absolute;
+    pointer-events:none;
+    z-index:0;
+    overflow:visible;
+  }
+  .doodle path,.doodle circle,.doodle line{
+    fill:none;
+    stroke:var(--ink);
+    stroke-width:2.4;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    vector-effect:non-scaling-stroke;
+  }
+  .doodle.hot path,.doodle.hot circle,.doodle.hot line{stroke:var(--hot)}
+
+  /* draw-on animation */
+  .draw{
+    stroke-dasharray:var(--len,600);
+    stroke-dashoffset:var(--len,600);
+    animation:draw 1.5s var(--ease) forwards;
+  }
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  /* gentle idle wobble */
+  .wob{animation:wob 5.5s ease-in-out infinite;transform-origin:center}
+  @keyframes wob{
+    0%,100%{transform:translate(0,0) rotate(0deg)}
+    33%{transform:translate(3px,-4px) rotate(1.4deg)}
+    66%{transform:translate(-3px,3px) rotate(-1.2deg)}
+  }
+
+  /* positions */
+  #d1{top:11%;right:6%;width:180px;height:142px}
+  #d3{bottom:21%;right:13%;width:110px;height:100px}
+  /* d2 sits in the page flow under the tagline, so it can never run into the text */
+  /* anchored to the tagline but out of the layout, so the headline stays put */
+  .sub-wrap{position:relative}
+  #d2{
+    position:absolute;top:calc(100% + 18px);left:clamp(16px,7vw,140px);
+    width:150px;height:115px;
+  }
+  @media (max-height:600px) and (min-width:901px){#d3{display:none}}
+  @media (max-height:620px){#d2{display:none}}
+
+  @media (max-width:900px){#d3{display:none}#d1{width:110px;height:90px;top:8%}#d2{width:110px;height:84px}}
+
+  /* ================= content ================= */
+  .top,main,.foot{position:relative;z-index:3}
+
+  .top{
+    display:flex;flex-wrap:wrap;align-items:baseline;
+    justify-content:space-between;gap:12px 28px;
+    padding-bottom:clamp(36px,8vh,80px);
+  }
+  .mark{font-size:clamp(1.1rem,2vw,1.45rem);font-weight:400;letter-spacing:-.015em}
+
+  nav{display:flex;flex-wrap:wrap;gap:6px 24px;font-size:13px}
+  nav a{color:var(--muted);transition:color .3s var(--ease);position:relative}
+  nav a:hover{color:var(--fg)}
+  /* hand-drawn underline on hover */
+  nav a::after{
+    content:"";position:absolute;left:-2px;right:-2px;bottom:-5px;height:7px;
+    background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 8' preserveAspectRatio='none'><path d='M1 5.2c9-2.6 18 1.8 27-.6s18-3.4 27-.8 18 .4 24-1.2' fill='none' stroke='%23ff4d1f' stroke-width='2' stroke-linecap='round'/></svg>") no-repeat center/100% 100%;
+    transform:scaleX(0);transform-origin:left;
+    transition:transform .45s var(--ease);
+  }
+  nav a:hover::after{transform:scaleX(1)}
+
+  /* ---- roster dropdown ---- */
+  nav{align-items:baseline}
+  .roster{position:relative}
+  .roster-btn{
+    background:none;border:0;font:inherit;color:var(--muted);cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;position:relative;
+    transition:color .3s var(--ease);
+  }
+  .roster-btn:hover,.roster-btn[aria-expanded="true"]{color:var(--fg)}
+  .roster-btn svg{width:9px;height:6px;transition:transform .35s var(--ease)}
+  .roster-btn svg path{fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+  .roster-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+
+  .roster-menu{
+    list-style:none;
+    position:absolute;top:calc(100% + 14px);right:-15px;
+    min-width:150px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    padding:10px 15px 12px;
+    box-shadow:3px 4px 0 rgba(20,20,16,.09);
+    opacity:0;visibility:hidden;
+    transform:translateY(-6px) rotate(.6deg);
+    transition:opacity .3s var(--ease),transform .35s var(--ease),visibility 0s linear .35s;
+    z-index:10;
+  }
+  .roster.open .roster-menu{
+    opacity:1;visibility:visible;transform:translateY(0) rotate(.6deg);
+    transition:opacity .3s var(--ease),transform .35s var(--ease),visibility 0s;
+  }
+  .roster-menu li+li{border-top:1px solid var(--line)}
+  nav .roster-menu a{
+    display:block;padding:7px 0 6px;
+    font-size:clamp(1rem,2vw,1.15rem);font-weight:400;letter-spacing:-.02em;
+    color:var(--muted);
+    transition:color .3s var(--ease);
+  }
+  nav .roster-menu a::after{left:0;right:auto;width:60%;bottom:4px}
+  nav .roster-menu a:hover,nav .roster-menu a:focus-visible{color:var(--fg)}
+
+  :focus-visible{outline:2px solid var(--hot);outline-offset:4px;border-radius:2px}
+
+  main{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(28px,5.5vh,56px)}
+
+  /* the blunt statement */
+  .statement{
+    font-size:clamp(2rem,8vw,6rem);
+    font-weight:400;
+    line-height:.98;
+    letter-spacing:-.04em;
+    max-width:14ch;
+    position:relative;
+  }
+  .statement .l{display:block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em}
+  .statement .l>span{display:block;transform:translateY(103%);animation:rise 1s var(--ease) forwards}
+  @keyframes rise{to{transform:translateY(0)}}
+
+  /* circled word */
+  .circled{position:relative;display:inline-block;white-space:nowrap}
+  .circled svg{
+    position:absolute;left:-9%;top:-16%;width:118%;height:132%;
+    overflow:visible;pointer-events:none;
+  }
+  .circled svg path{
+    fill:none;stroke:var(--hot);stroke-width:3;
+    stroke-linecap:round;
+    stroke-dasharray:520;stroke-dashoffset:520;
+    animation:draw 1.1s var(--ease) 1.15s forwards;
+  }
+
+  .sub{
+    font-size:clamp(1rem,2.4vw,1.55rem);
+    font-weight:400;letter-spacing:-.01em;
+    opacity:0;animation:fade .9s var(--ease) .85s forwards;
+  }
+  @keyframes fade{to{opacity:1}}
+  .sub a{position:relative;white-space:nowrap}
+  .sub a::after{
+    content:"";position:absolute;left:0;right:0;bottom:-6px;height:8px;
+    background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 8' preserveAspectRatio='none'><path d='M1 4.6c10-3 20 2 30-.4s20-2.8 29 .6' fill='none' stroke='%23ff4d1f' stroke-width='2' stroke-linecap='round'/></svg>") no-repeat center/100% 100%;
+    transform:scaleX(0);transform-origin:right;
+    transition:transform .45s var(--ease);
+  }
+  .sub a:hover::after,.sub a:focus-visible::after{transform:scaleX(1);transform-origin:left}
+
+  .foot{
+    display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+    gap:20px 34px;padding-top:clamp(36px,8vh,80px);
+    opacity:0;animation:fade .9s var(--ease) 1.2s forwards;
+  }
+  .contact{display:flex;flex-wrap:wrap;gap:4px 24px;font-size:14px;align-items:baseline}
+  .contact a{position:relative;padding-bottom:3px}
+  .contact a::after{
+    content:"";position:absolute;left:0;right:0;bottom:-3px;height:7px;
+    background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 8' preserveAspectRatio='none'><path d='M1 4.6c10-3 20 2 30-.4s20-2.8 29 .6' fill='none' stroke='%23141410' stroke-width='2' stroke-linecap='round'/></svg>") no-repeat center/100% 100%;
+    transform:scaleX(0);transform-origin:right;
+    transition:transform .45s var(--ease);
+  }
+  .contact a:hover::after{transform:scaleX(1);transform-origin:left}
+
+  .meta{
+    font-size:12px;color:var(--muted);
+    display:flex;flex-wrap:wrap;gap:4px 20px;
+    text-align:right;justify-content:flex-end;
+  }
+
+  /* ---- the obscure welsh bit ---- */
+  .gloss{
+    position:relative;
+    font-size:11px;
+    color:var(--muted);
+    letter-spacing:.02em;
+    cursor:help;
+    border-bottom:1px dotted var(--line);
+  }
+  .gloss .pop{
+    position:absolute;
+    bottom:calc(100% + 12px); right:0;
+    width:min(268px,74vw);
+    background:var(--bg);
+    border:1px solid var(--line);
+    padding:13px 15px;
+    font-size:12px; line-height:1.55; color:var(--fg);
+    text-align:left;
+    opacity:0; transform:translateY(5px) rotate(-.5deg);
+    pointer-events:none;
+    transition:opacity .35s var(--ease),transform .35s var(--ease);
+    box-shadow:3px 4px 0 rgba(20,20,16,.09);
+    z-index:9;
+  }
+  .gloss:hover .pop,.gloss:focus-visible .pop{opacity:1;transform:translateY(0) rotate(-.5deg)}
+  .gloss .pop b{font-weight:500}
+  .gloss .pop i{font-style:italic;color:var(--muted)}
+  .gloss .pop .ipa{font-variant:none;color:var(--muted)}
+
+  @media (max-width:680px){
+    .meta{text-align:left;justify-content:flex-start}
+    .statement{max-width:none;font-size:clamp(2.4rem,15vw,4.6rem)}
+    .gloss .pop{right:auto;left:0}
+  }
+
+  /* ================= secret: snake (tap the clock) ================= */
+  .clock{
+    background:none;border:0;font:inherit;color:inherit;letter-spacing:inherit;
+    padding:10px;margin:-10px;cursor:default;
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  .snake{
+    position:fixed;inset:0;z-index:50;
+    background:var(--bg);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:clamp(12px,2.4vh,22px);
+    padding:max(var(--pad),env(safe-area-inset-top)) var(--pad) max(var(--pad),env(safe-area-inset-bottom));
+    touch-action:none;user-select:none;-webkit-user-select:none;
+    animation:fade .35s var(--ease);
+  }
+  .snake[hidden]{display:none}
+  .snake-top{
+    display:flex;align-items:baseline;gap:22px;font-size:13px;color:var(--muted);
+  }
+  .snake-top b{font-weight:400;color:var(--fg);font-variant-numeric:tabular-nums}
+  .snake-close{
+    margin-left:auto;background:none;border:0;font:inherit;color:var(--muted);cursor:pointer;
+    padding:8px;margin-right:-8px;
+  }
+  .snake-close:hover{color:var(--fg)}
+
+  .snake-board{
+    position:relative;
+    border:1px solid var(--line);
+    box-shadow:3px 4px 0 rgba(20,20,16,.09);
+  }
+  .snake-board canvas{display:block}
+  .snake-msg{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:6px;text-align:center;padding:20px;
+    font-size:clamp(1.1rem,3.6vw,1.5rem);letter-spacing:-.02em;
+    background:rgba(240,238,232,.82);
+    pointer-events:none;
+  }
+  .snake-msg small{font-size:13px;color:var(--muted);letter-spacing:0}
+  .snake-msg[hidden]{display:none}
+
+  .snake-pause{
+    background:none;border:0;font:inherit;color:var(--muted);cursor:pointer;padding:8px;
+  }
+  .snake-pause:hover{color:var(--fg)}
+  .snake-close{margin-left:0}
+  .snake-top .gap{margin-left:auto}
+
+  /* tap feedback: a quick orange blush on the side you tapped */
+  .snake-flash{
+    position:fixed;top:0;bottom:0;width:50%;pointer-events:none;
+    background:var(--hot);opacity:0;
+  }
+  .snake-flash.l{left:0}.snake-flash.r{right:0}
+  .snake-flash.go{animation:blush .28s ease-out}
+  @keyframes blush{0%{opacity:.08}100%{opacity:0}}
+
+  .snake-hint{font-size:12px;color:var(--muted);text-align:center;max-width:32ch;line-height:1.6}
+  .snake-hint .touch{display:none}
+  @media (pointer:coarse),(max-width:700px){
+    .snake-hint .keys{display:none}
+    .snake-hint .touch{display:inline}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .statement .l>span{transform:none}
+    .draw,.circled svg path{stroke-dashoffset:0}
+    .sub,.foot{opacity:1}
+    #trail{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- cursor squiggle -->
+<canvas id="trail"></canvas>
+
+<!-- ============ hand-drawn doodles ============ -->
+
+<!-- spiral scribble -->
+<svg class="doodle wob" id="d1" viewBox="0 0 190 150" aria-hidden="true">
+  <path class="draw" style="--len:760"
+    d="M96 22c-22-9-48 2-56 23s6 45 29 49 45-13 46-35-19-38-40-36-36 20-33 42 25 39 48 36"/>
+</svg>
+
+
+<!-- star burst -->
+<svg class="doodle wob" id="d3" viewBox="0 0 120 110" style="animation-delay:-3.5s" aria-hidden="true">
+  <path class="draw" style="--len:120;animation-delay:.5s" d="M60 12v30"/>
+  <path class="draw" style="--len:120;animation-delay:.58s" d="M60 68v30"/>
+  <path class="draw" style="--len:120;animation-delay:.66s" d="M14 55h30"/>
+  <path class="draw" style="--len:120;animation-delay:.74s" d="M76 55h30"/>
+  <path class="draw" style="--len:110;animation-delay:.82s" d="M28 23l20 20"/>
+  <path class="draw" style="--len:110;animation-delay:.9s" d="M72 67l20 20"/>
+</svg>
+
+
+<!-- ============ content ============ -->
+
+<div class="top">
+  <a href="index.html" class="mark">sain&nbsp;bureau</a>
+  <nav aria-label="Main">
+    <div class="roster" id="roster">
+      <button class="roster-btn" type="button" aria-expanded="false" aria-controls="roster-menu">
+        roster
+        <svg viewBox="0 0 9 6" aria-hidden="true"><path d="M1 1.2c1.2 1.3 2.3 2.4 3.5 3.6 1.1-1.3 2.3-2.5 3.5-3.7"/></svg>
+      </button>
+      <ul class="roster-menu" id="roster-menu">
+        <li><a href="maeve.html">maeve</a></li>
+        <li><a href="tathan.html">tathan</a></li>
+      </ul>
+    </div>
+    <a href="press.html">press</a>
+    <a href="mailto:info@sainbureau.com">contact</a>
+  </nav>
+</div>
+
+<main>
+
+  <h1 class="statement" id="statement" aria-label="we manage artists, k?">
+    <span class="l"><span style="animation-delay:.12s">we manage</span></span>
+    <span class="l"><span style="animation-delay:.21s"><span class="circled">artists<svg viewBox="0 0 200 90" aria-hidden="true"><path d="M52 10c-30 1-46 12-45 27 1 17 28 30 74 32 40 2 84-6 95-20 10-13-6-27-42-33-32-5-72-5-96 2-20 6-28 14-25 22"/></svg></span>, k?</span></span>
+  </h1>
+
+  <div class="sub-wrap">
+    <p class="sub">that's it. that's the company.</p>
+    <!-- zigzag + dot -->
+    <svg class="doodle wob hot" id="d2" viewBox="0 0 170 130" style="animation-delay:-2s" aria-hidden="true">
+      <path class="draw" style="--len:420;animation-delay:.35s"
+        d="M18 104c14-18 26-6 36-24s13-40 27-52"/>
+      <path class="draw" style="--len:300;animation-delay:.55s"
+        d="M64 96c16-10 22-30 38-38s30 2 44-10"/>
+      <circle class="draw" style="--len:60;animation-delay:.8s" cx="150" cy="30" r="9"/>
+    </svg>
+  </div>
+
+</main>
+
+<div class="foot">
+  <div class="contact">
+    <a href="mailto:info@sainbureau.com">info@sainbureau.com</a>
+  </div>
+  <div class="meta">
+    <span class="gloss" tabindex="0">
+      sain <span class="ipa">/saɪn/</span> means sound
+      <span class="pop">
+        <b>sain</b> <i>(noun, feminine — plural</i> <i>seiniau)</i><br>
+        welsh for <b>sound</b>. also <i>audio, tone</i>.<br>
+        <span class="ipa">ipa /sai̯n/, like “sign”.</span>
+      </span>
+    </span>
+    <span>united kingdom</span>
+    <button type="button" class="clock" id="clock">--:--</button>
+  </div>
+</div>
+
+<!-- ============ you found it ============ -->
+<div class="snake" id="snake" role="dialog" aria-modal="true" aria-label="snake" tabindex="-1" hidden>
+  <div class="snake-top" style="width:var(--board-w,320px)">
+    <span>score <b id="sScore">0</b></span>
+    <span>best <b id="sBest">0</b></span>
+    <span class="gap"></span>
+    <button class="snake-pause" id="sPause" type="button">pause</button>
+    <button class="snake-close" id="sClose" type="button">close</button>
+  </div>
+  <div class="snake-board" id="sBoard">
+    <canvas id="sCanvas"></canvas>
+    <p class="snake-msg" id="sMsg"></p>
+  </div>
+  <div class="snake-flash l" id="sFlashL"></div>
+  <div class="snake-flash r" id="sFlashR"></div>
+  <p class="snake-hint">
+    <span class="keys">arrow keys or wasd. space pauses. esc closes.</span>
+    <span class="touch">tap the left or right side to turn. or swipe.</span>
+  </p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- cursor squiggle trail ---------- */
+  if (!reduce){
+    var cv = document.getElementById("trail"),
+        ctx = cv.getContext("2d"),
+        dpr = Math.min(devicePixelRatio || 1, 2),
+        pts = [], MAX = 26, t = 0;
+
+    function size(){
+      cv.width = innerWidth * dpr;
+      cv.height = innerHeight * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    size();
+    addEventListener("resize", function(){ ctx.setTransform(1,0,0,1,0,0); size(); });
+
+    addEventListener("pointermove", function(e){
+      pts.push({x:e.clientX, y:e.clientY, life:1});
+      if (pts.length > MAX) pts.shift();
+    }, {passive:true});
+
+    function frame(){
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      t += 0.14;
+
+      for (var i = 0; i < pts.length; i++) pts[i].life -= 0.022;
+      pts = pts.filter(function(p){ return p.life > 0; });
+
+      if (pts.length > 2){
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.beginPath();
+        for (var j = 0; j < pts.length - 1; j++){
+          var p = pts[j], n = pts[j+1];
+          // wobble perpendicular to travel = hand-drawn feel
+          var w = Math.sin(t + j * 0.72) * 3.4 * p.life;
+          var mx = (p.x + n.x) / 2 + w;
+          var my = (p.y + n.y) / 2 + Math.cos(t + j * 0.72) * 3.4 * p.life;
+          if (j === 0) ctx.moveTo(p.x, p.y);
+          ctx.quadraticCurveTo(p.x, p.y, mx, my);
+        }
+        ctx.strokeStyle = "rgba(255,77,31,.85)";
+        ctx.lineWidth = 2.6;
+        ctx.stroke();
+      }
+      requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  /* ---------- doodles drift slightly with pointer ---------- */
+  if (!reduce){
+    var doodles = [].slice.call(document.querySelectorAll(".doodle"));
+    var depths = [0.026, 0.034, -0.02];
+    addEventListener("pointermove", function(e){
+      var dx = e.clientX - innerWidth / 2,
+          dy = e.clientY - innerHeight / 2;
+      doodles.forEach(function(d, i){
+        var k = depths[i] || 0.02;
+        d.style.translate = (dx * k).toFixed(1) + "px " + (dy * k).toFixed(1) + "px";
+      });
+    }, {passive:true});
+  }
+
+  /* ---------- roster dropdown ---------- */
+  var roster = document.getElementById("roster"),
+      rBtn = roster.querySelector(".roster-btn"),
+      hoverTimer, hoverOpenedAt = 0;
+
+  function setOpen(open){
+    roster.classList.toggle("open", open);
+    rBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  rBtn.addEventListener("click", function(){
+    // if hover just opened it, a click shouldn't immediately close it
+    if (Date.now() - hoverOpenedAt < 600) { setOpen(true); return; }
+    setOpen(!roster.classList.contains("open"));
+  });
+  // mouse users: open on hover, with a short grace period on leave
+  roster.addEventListener("pointerenter", function(e){
+    if (e.pointerType !== "mouse") return;
+    clearTimeout(hoverTimer);
+    if (!roster.classList.contains("open")) hoverOpenedAt = Date.now();
+    setOpen(true);
+  });
+  roster.addEventListener("pointerleave", function(e){
+    if (e.pointerType !== "mouse") return;
+    hoverTimer = setTimeout(function(){ setOpen(false); }, 220);
+  });
+  document.addEventListener("click", function(e){
+    if (!roster.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && roster.classList.contains("open")){
+      setOpen(false); rBtn.focus();
+    }
+  });
+  roster.addEventListener("focusout", function(e){
+    if (!roster.contains(e.relatedTarget)) setOpen(false);
+  });
+
+  /* ---------- clock ---------- */
+  var clock = document.getElementById("clock");
+  function tick(){
+    clock.textContent = new Date().toLocaleTimeString("en-GB", {
+      hour:"2-digit", minute:"2-digit", hour12:false, timeZone:"Europe/London"
+    });
+  }
+  tick(); setInterval(tick, 20000);
+
+  /* ---------- secret: snake. tap the clock. ---------- */
+  (function(){
+    var overlay = document.getElementById("snake"),
+        board   = document.getElementById("sBoard"),
+        cv      = document.getElementById("sCanvas"),
+        g       = cv.getContext("2d"),
+        msg     = document.getElementById("sMsg"),
+        scoreEl = document.getElementById("sScore"),
+        bestEl  = document.getElementById("sBest"),
+        closeB  = document.getElementById("sClose"),
+        pauseB  = document.getElementById("sPause"),
+        flashL  = document.getElementById("sFlashL"),
+        flashR  = document.getElementById("sFlashR"),
+        clockB  = document.getElementById("clock");
+
+    var HOT = "#ff4d1f", INK = "#141410",
+        coarse = matchMedia("(pointer:coarse), (max-width:700px)").matches,
+        KEY = "sainbureau.snake.best";
+
+    var cols, rows, cell, dpr = Math.min(devicePixelRatio || 1, 2),
+        snake, dir, queue, food, score, best = 0,
+        state = "idle",            // idle | run | pause | over
+        last = 0, acc = 0, raf = 0, t = 0, open = false;
+
+    try { best = parseInt(localStorage.getItem(KEY), 10) || 0; } catch(e){}
+    bestEl.textContent = best;
+
+    var OPP = {up:"down", down:"up", left:"right", right:"left"},
+        VEC = {up:[0,-1], down:[0,1], left:[-1,0], right:[1,0]};
+
+    function layout(keepGrid){
+      var portrait = innerHeight > innerWidth;
+      if (!keepGrid){
+        // small, nokia-sized grid: 20x14 landscape, 15x17 portrait
+        cols = portrait ? 15 : 20;
+        rows = portrait ? 17 : 14;
+      }
+      var availW = Math.min(innerWidth - 48, portrait ? 340 : 440),
+          availH = Math.max(160, Math.min(innerHeight - 190, 380));
+      cell = Math.max(10, Math.floor(Math.min(availW / cols, availH / rows)));
+      var w = cols * cell, h = rows * cell;
+      cv.style.width = w + "px"; cv.style.height = h + "px";
+      cv.width = w * dpr; cv.height = h * dpr;
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      overlay.style.setProperty("--board-w", w + "px");
+      draw();
+    }
+
+    function say(big, small){
+      if (!big){ msg.hidden = true; return; }
+      msg.hidden = false;
+      msg.innerHTML = "<span>" + big + "</span>" + (small ? "<small>" + small + "</small>" : "");
+    }
+
+    function placeFood(){
+      var free = [];
+      for (var x = 0; x < cols; x++) for (var y = 0; y < rows; y++){
+        if (!snake.some(function(s){ return s.x === x && s.y === y; })) free.push({x:x, y:y});
+      }
+      food = free[Math.floor(Math.random() * free.length)];
+    }
+
+    function reset(){
+      var cx = Math.floor(cols / 2) - 2, cy = Math.floor(rows / 2);
+      snake = [{x:cx+3,y:cy},{x:cx+2,y:cy},{x:cx+1,y:cy},{x:cx,y:cy}];
+      dir = "right"; queue = []; score = 0; scoreEl.textContent = 0;
+      placeFood();
+    }
+
+    function start(){
+      if (state === "run") return;
+      if (state !== "pause") reset();
+      state = "run"; say(null); pauseB.textContent = "pause";
+    }
+
+    function pause(){
+      if (state === "run"){ state = "pause"; say("paused", coarse ? "tap to carry on" : "press space to carry on"); pauseB.textContent = "play"; }
+      else if (state === "pause"){ state = "run"; say(null); pauseB.textContent = "pause"; }
+    }
+    var LEFT_OF  = {up:"left", left:"down", down:"right", right:"up"},
+        RIGHT_OF = {up:"right", right:"down", down:"left", left:"up"};
+    function relTurn(side){
+      var cur = queue.length ? queue[queue.length - 1] : dir;
+      var ok = turn(side === "l" ? LEFT_OF[cur] : RIGHT_OF[cur]);
+      var f = side === "l" ? flashL : flashR;
+      f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
+      return ok;
+    }
+
+    function turn(d){
+      if (state === "idle" || state === "over"){ start(); }
+      if (state === "pause"){ pause(); }
+      var lastDir = queue.length ? queue[queue.length - 1] : dir;
+      if (d === lastDir || d === OPP[lastDir] || queue.length > 2) return false;
+      queue.push(d); return true;
+    }
+
+    function speed(){ return Math.max(62, 150 - score * 4); }
+
+    function step(){
+      if (queue.length) dir = queue.shift();
+      var v = VEC[dir], h = snake[0],
+          nx = (h.x + v[0] + cols) % cols,
+          ny = (h.y + v[1] + rows) % rows,
+          eating = food && nx === food.x && ny === food.y,
+          body = eating ? snake : snake.slice(0, -1);
+      if (body.some(function(s){ return s.x === nx && s.y === ny; })){
+        state = "over";
+        if (score > best){
+          best = score; bestEl.textContent = best;
+          try { localStorage.setItem(KEY, best); } catch(e){}
+        }
+        say("that's it. that's the game.", "score " + score + ". " + (coarse ? "tap" : "press any key") + " to go again.");
+        return;
+      }
+      snake.unshift({x:nx, y:ny});
+      if (eating){ score++; scoreEl.textContent = score; placeFood(); }
+      else snake.pop();
+    }
+
+    function centre(p){ return [p.x * cell + cell / 2, p.y * cell + cell / 2]; }
+
+    function draw(){
+      if (!snake) return;
+      var w = cols * cell, h = rows * cell;
+      g.clearRect(0, 0, w, h);
+
+      // food: a little ink circle, like the doodles
+      if (food){
+        var f = centre(food);
+        g.beginPath();
+        g.arc(f[0], f[1], cell * 0.28, 0, Math.PI * 2);
+        g.strokeStyle = INK; g.lineWidth = 2; g.stroke();
+      }
+
+      // snake: one orange squiggle, broken where it wraps round the edge
+      g.lineCap = "round"; g.lineJoin = "round";
+      g.strokeStyle = HOT; g.lineWidth = Math.max(5, cell * 0.56);
+      g.beginPath();
+      for (var i = 0; i < snake.length; i++){
+        var c = centre(snake[i]),
+            wob = (reduce || i === 0) ? 0 : Math.sin(t * 0.9 + i * 0.8) * cell * 0.09,
+            px = c[0] + (dir === "up" || dir === "down" ? wob : 0),
+            py = c[1] + (dir === "left" || dir === "right" ? wob : 0);
+        var prev = snake[i - 1];
+        if (i === 0 || Math.abs(prev.x - snake[i].x) + Math.abs(prev.y - snake[i].y) > 1) g.moveTo(px, py);
+        else g.lineTo(px, py);
+      }
+      if (snake.length === 1){ var s0 = centre(snake[0]); g.lineTo(s0[0] + .1, s0[1]); }
+      g.stroke();
+
+      // head
+      var hc = centre(snake[0]);
+      g.beginPath(); g.arc(hc[0], hc[1], Math.max(3, cell * 0.3), 0, Math.PI * 2);
+      g.fillStyle = HOT; g.fill();
+      var v = VEC[dir];
+      g.beginPath(); g.arc(hc[0] + v[0] * cell * 0.1 - v[1] * cell * 0.1, hc[1] + v[1] * cell * 0.1 + v[0] * cell * 0.1, Math.max(1.2, cell * 0.07), 0, Math.PI * 2);
+      g.fillStyle = INK; g.fill();
+    }
+
+    function loop(now){
+      raf = requestAnimationFrame(loop);
+      var dt = Math.min(100, now - (last || now)); last = now;
+      t += dt / 100;
+      if (state === "run"){
+        acc += dt;
+        while (acc >= speed() && state === "run"){ acc -= speed(); step(); }
+      } else acc = 0;
+      draw();
+    }
+
+    function openGame(){
+      if (open) return;
+      open = true; overlay.hidden = false;
+      document.body.style.overflow = "hidden";
+      layout(false); reset(); state = "idle";
+      say("snake", coarse ? "tap to play" : "press any key to play");
+      last = 0; raf = requestAnimationFrame(loop);
+      overlay.focus();
+    }
+    function closeGame(){
+      if (!open) return;
+      open = false; overlay.hidden = true; state = "idle";
+      cancelAnimationFrame(raf);
+      document.body.style.overflow = "";
+      clockB.focus();
+    }
+
+    clockB.addEventListener("click", openGame);
+    closeB.addEventListener("click", closeGame);
+
+    // keyboard
+    var KEYS = {ArrowUp:"up", ArrowDown:"down", ArrowLeft:"left", ArrowRight:"right",
+                w:"up", s:"down", a:"left", d:"right", "2":"up", "8":"down", "4":"left", "6":"right"};
+    document.addEventListener("keydown", function(e){
+      if (!open) return;
+      var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (k === "Escape"){ e.preventDefault(); closeGame(); return; }
+      if (e.target === closeB && (k === "Enter" || k === " ")) return;
+      if (k === " " || k === "5" || k === "p"){ e.preventDefault(); if (state === "run" || state === "pause") pause(); else start(); return; }
+      if (KEYS[k]){ e.preventDefault(); turn(KEYS[k]); return; }
+      if (k === "Tab") return;
+      if (state === "idle" || state === "over"){ e.preventDefault(); start(); }
+    });
+
+    // touch / mouse: a quick tap on the left or right half turns left or right
+    // (relative to where the snake is heading). a swipe steers directly.
+    var sx = null, sy = null, swiped = false, tapQueued = false;
+    overlay.addEventListener("pointerdown", function(e){
+      if (e.target.closest("button")) return;
+      e.preventDefault();
+      sx = e.clientX; sy = e.clientY; swiped = false; tapQueued = false;
+      // turn on press, not release: feels instant
+      if (state === "run") tapQueued = relTurn(e.clientX < innerWidth / 2 ? "l" : "r");
+    });
+    overlay.addEventListener("pointermove", function(e){
+      if (sx === null || state !== "run") return;
+      var dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 26) return;
+      if (!swiped){
+        // it was a swipe, not a tap: undo the tap-turn we queued on press
+        if (tapQueued) queue.pop();
+        swiped = true;
+      }
+      turn(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : (dy > 0 ? "down" : "up"));
+      sx = e.clientX; sy = e.clientY;
+    });
+    overlay.addEventListener("pointerup", function(e){
+      if (sx !== null && !swiped){
+        if (state === "idle" || state === "over") start();
+        else if (state === "pause") pause();
+      }
+      sx = sy = null;
+    });
+    overlay.addEventListener("pointercancel", function(){ sx = sy = null; });
+
+    pauseB.addEventListener("click", function(){
+      if (state === "run" || state === "pause") pause(); else start();
+    });
+
+    addEventListener("resize", function(){ if (open) layout(state === "run" || state === "pause"); });
+    document.addEventListener("visibilitychange", function(){ if (document.hidden && state === "run") pause(); });
+  })();
+
+
+})();
+</script>
+</body>
+</html>
