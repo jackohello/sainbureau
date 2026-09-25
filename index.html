@@ -122,6 +122,7 @@
 
   *{box-sizing:border-box;margin:0;padding:0}
 
+  html,body{overscroll-behavior:none}   /* no rubber-band bounce on ios */
   body{
     background:var(--bg);
     color:var(--fg);
@@ -600,7 +601,11 @@
     addEventListener("touchmove", function(e){
       var p = e.touches[0]; addPt(p.clientX, p.clientY);
       if (tStart && Math.hypot(p.clientX - tStart.x, p.clientY - tStart.y) > 10) tStart.moved = true;
-    }, {passive:true});
+      // the homepage fits on one screen, so a one-finger drag should draw, not drag the page about.
+      // pinch-zoom still works, and if a small screen can't fit everything, scrolling is left alone.
+      var fits = document.documentElement.scrollHeight <= innerHeight + 1;
+      if (e.touches.length === 1 && fits && e.cancelable) e.preventDefault();
+    }, {passive:false});
     addEventListener("touchend", function(){
       if (tStart && !tStart.moved && performance.now() - tStart.at < 350 && !document.getElementById("snake").offsetParent){
         rings.push({x:tStart.x, y:tStart.y, born:performance.now(), seed:Math.random() * 6.28});
