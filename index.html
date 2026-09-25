@@ -111,15 +111,15 @@
 }
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="inter.woff2" as="font" type="font/woff2" crossorigin>
 
 <style>
+  @font-face{
+    font-family:"Inter";src:url("inter.woff2") format("woff2");
+    font-weight:300 500;font-style:normal;font-display:swap;
+  }
   /* fade across to the next page: native cross-fade where supported, simple fade-out elsewhere */
-  @view-transition{navigation:auto}
-  ::view-transition-old(root),::view-transition-new(root){animation-duration:.6s;animation-timing-function:ease}
-  body.leaving{opacity:0!important;transition:opacity .45s ease}
+  body.leaving{opacity:0!important;transition:opacity .38s ease}
 
   :root{
     --bg:#f0eee8;
@@ -692,7 +692,7 @@
   }
 
   /* ---------- fade out when heading to another page on the site ---------- */
-  if (!window.CSSViewTransitionRule){
+  {
     document.addEventListener("click", function(e){
       var a = e.target.closest("a"); if (!a) return;
       var href = a.getAttribute("href") || "";
@@ -700,7 +700,7 @@
       if (!/\.html(#.*)?$/.test(href) || /^https?:/.test(href)) return;
       e.preventDefault();
       document.body.classList.add("leaving");
-      setTimeout(function(){ location.href = href; }, 420);
+      setTimeout(function(){ location.href = href; }, 380);
     });
     addEventListener("pageshow", function(e){ if (e.persisted) document.body.classList.remove("leaving"); });
   }

@@ -82,18 +82,15 @@
 }
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="inter.woff2" as="font" type="font/woff2" crossorigin>
 
-<script>
-  // browsers that can cross-fade between pages do it natively; the rest get a simple fade-in
-  if (!window.CSSViewTransitionRule) document.documentElement.classList.add("fadein");
-</script>
+<script>document.documentElement.classList.add("js");</script>
 
 <style>
-  @view-transition{navigation:auto}
-  ::view-transition-old(root),::view-transition-new(root){animation-duration:.6s;animation-timing-function:ease}
+  @font-face{
+    font-family:"Inter";src:url("inter.woff2") format("woff2");
+    font-weight:300 500;font-style:normal;font-display:swap;
+  }
 
   :root{
     --bg:#121210;
@@ -106,9 +103,10 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--bg)}
-  html.fadein body{animation:pagein .6s ease both}
-  body.leaving{opacity:0;transition:opacity .45s ease}
-  @keyframes pagein{from{opacity:0}to{opacity:1}}
+  /* one single fade-in: the page waits (briefly) for the video, then everything arrives together */
+  body{transition:opacity .7s ease}
+  html.js:not(.ready) body{opacity:0}
+  body.leaving{opacity:0!important;transition:opacity .38s ease}
 
   body{
     color:var(--fg);
@@ -128,7 +126,7 @@
   .bg{
     position:fixed;inset:0;width:100%;height:100%;
     object-fit:cover;z-index:-2;
-    opacity:0;transition:opacity 1.2s ease;
+    opacity:0;transition:opacity .6s ease;
     background:var(--bg);
   }
   .bg.on{opacity:1}
@@ -232,7 +230,7 @@
   .ring{position:relative;display:inline-block;white-space:nowrap}
   .ring svg{position:absolute;left:-19%;top:-14%;width:138%;height:134%;overflow:visible;pointer-events:none}
   .ring svg path{
-    fill:none;stroke:var(--hot);stroke-linecap:round;
+    fill:none;stroke:var(--hot);stroke-opacity:.62;stroke-linecap:round;
     stroke-dasharray:var(--len,3000);stroke-dashoffset:var(--len,3000);
   }
   .ring.go svg path{animation:draw 1.1s var(--ease) forwards}
@@ -277,9 +275,7 @@
 </head>
 <body>
 
-<video class="bg" id="bgvid" autoplay muted loop playsinline preload="auto" aria-hidden="true">
-  <source src="maeveroster.mp4" type="video/mp4" />
-</video>
+<video class="bg" id="bgvid" data-src="maeveroster.mp4" autoplay muted loop playsinline disablepictureinpicture disableremoteplayback aria-hidden="true"></video>
 <div class="shade" aria-hidden="true"></div>
 <canvas id="trail" aria-hidden="true"></canvas>
 
@@ -353,28 +349,37 @@
   "use strict";
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- background video: fade in once it's actually playing ---------- */
-  var vid = document.getElementById("bgvid");
-  // browsers only allow autoplay when the video is provably silent, so say so in every way they check
-  vid.muted = true; vid.defaultMuted = true; vid.setAttribute("muted", "");
-  vid.playsInline = true;
-  function show(){ vid.classList.add("on"); }
-  function tryPlay(){
-    var pr = vid.play();
-    if (pr && pr.catch) pr.catch(function(){});
-  }
-  if (reduce){ vid.removeAttribute("autoplay"); vid.pause(); vid.addEventListener("loadeddata", show); }
-  else {
-    vid.addEventListener("playing", show);
-    vid.addEventListener("loadeddata", show);
-    if (vid.readyState >= 2) show();
-    tryPlay();
-    vid.addEventListener("canplay", tryPlay, {once:true});
-    // if the browser still refused (low power mode, strict settings), start on the first scroll, tap or key
+  /* ---------- background video ----------
+     safari asks for video in small chunks, and cloudflare's cache can answer those in a way
+     safari rejects (black frame + a play button). loading the file whole first sidesteps that
+     completely, in every browser. */
+  var vid = document.getElementById("bgvid"), SRC = vid.getAttribute("data-src"), revealed = false;
+  vid.muted = true; vid.defaultMuted = true; vid.playsInline = true;
+
+  function reveal(){ if (revealed) return; revealed = true; document.documentElement.classList.add("ready"); }
+  function tryPlay(){ var pr = vid.play(); if (pr && pr.catch) pr.catch(function(){}); }
+
+  vid.addEventListener("playing", function(){ vid.classList.add("on"); reveal(); });
+  setTimeout(reveal, reduce ? 0 : 1400);            // never keep people waiting for the video
+
+  function useDirect(){ vid.src = SRC; vid.load(); if (!reduce) tryPlay(); }
+  if (window.fetch && window.URL && URL.createObjectURL){
+    fetch(SRC).then(function(r){ if (!r.ok) throw new Error(r.status); return r.blob(); })
+      .then(function(b){
+        vid.src = URL.createObjectURL(b.type ? b : new Blob([b], {type:"video/mp4"}));
+        vid.load();
+        if (reduce){ vid.addEventListener("loadeddata", function(){ vid.classList.add("on"); }); }
+        else tryPlay();
+      })
+      .catch(useDirect);
+  } else useDirect();
+
+  if (!reduce){
+    // if a browser still holds back autoplay (low power mode etc.), start on the first touch, scroll or key
     ["pointerdown", "keydown", "scroll", "touchstart", "wheel"].forEach(function(ev){
-      addEventListener(ev, function once(){ if (vid.paused) tryPlay(); removeEventListener(ev, once); }, {passive:true});
+      addEventListener(ev, function once(){ if (vid.paused && vid.src) tryPlay(); removeEventListener(ev, once); }, {passive:true});
     });
-    document.addEventListener("visibilitychange", function(){ if (!document.hidden && vid.paused) tryPlay(); });
+    document.addEventListener("visibilitychange", function(){ if (!document.hidden && vid.paused && vid.src) tryPlay(); });
   }
 
   /* ---------- first screen = exactly one screen, whatever the header's height ---------- */
@@ -383,7 +388,7 @@
   topH(); addEventListener("resize", topH);
 
   /* ---------- fade out when leaving for another page on the site ---------- */
-  if (!window.CSSViewTransitionRule){
+  {
     document.addEventListener("click", function(e){
       var a = e.target.closest("a"); if (!a) return;
       var href = a.getAttribute("href") || "";
@@ -391,7 +396,7 @@
       if (!/\.html(#.*)?$/.test(href) || /^https?:/.test(href)) return;
       e.preventDefault();
       document.body.classList.add("leaving");
-      setTimeout(function(){ location.href = href; }, 420);
+      setTimeout(function(){ location.href = href; }, 380);
     });
     addEventListener("pageshow", function(e){ if (e.persisted) document.body.classList.remove("leaving"); });
   }
