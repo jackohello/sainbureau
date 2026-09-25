@@ -91,7 +91,14 @@
       "@id": "https://sainbureau.com/maeve.html#artist",
       "name": "maeve",
       "url": "https://sainbureau.com/maeve.html",
-      "sameAs": []
+      "genre": ["post-punk", "shoegaze"],
+      "foundingLocation": { "@type": "Place", "name": "South Wales" },
+      "sameAs": [
+        "https://maeve.fans",
+        "https://open.spotify.com/artist/3DNFhvW8CCWslJ8idXFwgn",
+        "https://maevecymru.bandcamp.com",
+        "https://www.youtube.com/@maeveband"
+      ]
     },
     {
       "@type": "MusicGroup",
@@ -109,6 +116,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
+  /* fade across to the next page: native cross-fade where supported, simple fade-out elsewhere */
+  @view-transition{navigation:auto}
+  ::view-transition-old(root),::view-transition-new(root){animation-duration:.6s;animation-timing-function:ease}
+  body.leaving{opacity:0!important;transition:opacity .45s ease}
+
   :root{
     --bg:#f0eee8;
     --fg:#141410;
@@ -677,6 +689,20 @@
         d.style.translate = (dx * k).toFixed(1) + "px " + (dy * k).toFixed(1) + "px";
       });
     }, {passive:true});
+  }
+
+  /* ---------- fade out when heading to another page on the site ---------- */
+  if (!window.CSSViewTransitionRule){
+    document.addEventListener("click", function(e){
+      var a = e.target.closest("a"); if (!a) return;
+      var href = a.getAttribute("href") || "";
+      if (a.target === "_blank" || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      if (!/\.html(#.*)?$/.test(href) || /^https?:/.test(href)) return;
+      e.preventDefault();
+      document.body.classList.add("leaving");
+      setTimeout(function(){ location.href = href; }, 420);
+    });
+    addEventListener("pageshow", function(e){ if (e.persisted) document.body.classList.remove("leaving"); });
   }
 
   /* ---------- roster dropdown ---------- */
