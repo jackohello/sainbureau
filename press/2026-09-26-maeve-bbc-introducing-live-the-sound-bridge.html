@@ -241,7 +241,17 @@
     transition:transform .45s var(--ease);
   }
   nav a:hover::after,nav a[aria-current="page"]::after,.u:hover::after,.u:focus-visible::after{transform:scaleX(1)}
-  .u{position:relative}
+  /* links that can wrap onto several lines get their squiggle on every line */
+  .u{
+    background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8' preserveAspectRatio='none'><path d='M1 5.2c11-2.6 22 1.8 33-.6s22-3.4 33-.8 22 .4 33-1.2 22 2.4 33 .9 22-3 33-1 22 1.6 32 .1' fill='none' stroke='%23ff4d1f' stroke-width='2' stroke-linecap='round'/></svg>") no-repeat left bottom;
+    background-size:0% 7px;
+    padding-bottom:6px;
+    -webkit-box-decoration-break:clone;box-decoration-break:clone;
+    transition:background-size .5s var(--ease);
+  }
+  .u:hover,.u:focus-visible{background-size:100% 7px}
+  .u::after{content:none!important}
+
 
   .roster{position:relative}
   .roster-btn{
@@ -337,7 +347,8 @@
   .more{margin-top:clamp(44px,8vh,90px);font-size:clamp(1.1rem,2.4vw,1.5rem)}
 
   @media (max-width:900px){
-    .copy figure.inset{float:none;width:min(100%,340px);margin:1.4em 0}
+    .copy figure.inset{float:none;width:min(100%,340px);margin:1.6em auto}
+    .copy figure.inset figcaption{text-align:center}
     .cols{grid-template-columns:minmax(0,1fr)}
     .side{position:static}
   }
@@ -367,7 +378,7 @@
   <div class="a-meta"><time datetime="2026-09-26">26/09/2026</time><a class="tag" href="../maeve.html"><span class="ring">maeve</span></a></div>
   <h1 class="headline">maeve join the bug club on the bill for bbc introducing live’s the sound bridge in bridgend</h1>
   <p class="standfirst">the south wales six-piece play black cat in bridgend on friday 6 november, as bbc introducing, horizons / gorwelion and beacons cymru bring a day of new music talks and live sets to the town.</p>
-  <figure class="hero"><img src="images/2026-09-26-maeve-the-sound-bridge.jpg" alt="maeve live: keys and guitar under streaks of stage light, black and white" width="1600" height="1067"><figcaption>maeve, live. photo: cheye carwyn williams mcfarland</figcaption></figure>
+  <figure class="hero"><img src="images/2026-09-26-maeve-the-sound-bridge.jpg" alt="maeve live: keys and guitar under streaks of stage light, black and white" width="1600" height="1067"><figcaption>photo: cheye carwyn williams mcfarland</figcaption></figure>
   <div class="cols">
     <div class="copy">
       <p>maeve have been confirmed for the sound bridge, bbc introducing live’s event in wales, playing black cat in bridgend on friday 6 november.</p>
