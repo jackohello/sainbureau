@@ -39,9 +39,15 @@
       "alternateName": "Maeve",
       "url": "https://sainbureau.com/maeve.html",
       "description": "six-piece from south wales making loud, wordy, gritty post-punk with shoegaze hooks and haze.",
-      "genre": ["post-punk", "shoegaze"],
+      "genre": [
+        "post-punk",
+        "shoegaze"
+      ],
       "foundingDate": "2026-03",
-      "foundingLocation": { "@type": "Place", "name": "South Wales" },
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "South Wales"
+      },
       "sameAs": [
         "https://maeve.fans",
         "https://open.spotify.com/artist/3DNFhvW8CCWslJ8idXFwgn",
@@ -53,12 +59,30 @@
           "@type": "MusicRecording",
           "name": "behind your smile",
           "url": "https://maevecymru.bandcamp.com/track/behind-your-smile",
-          "byArtist": { "@id": "https://sainbureau.com/maeve.html#artist" }
+          "byArtist": {
+            "@id": "https://sainbureau.com/maeve.html#artist"
+          }
         }
       ],
       "contactPoint": [
-        { "@type": "ContactPoint", "contactType": "band manager", "email": "tathan@sainbureau.com" },
-        { "@type": "ContactPoint", "contactType": "day to day manager", "email": "jack@sainbureau.com" }
+        {
+          "@type": "ContactPoint",
+          "contactType": "band manager",
+          "email": "tathan@sainbureau.com"
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "day to day manager",
+          "email": "jack@sainbureau.com"
+        }
+      ],
+      "subjectOf": [
+        {
+          "@type": "NewsArticle",
+          "@id": "https://sainbureau.com/press/2026-09-26-maeve-bbc-introducing-live-the-sound-bridge.html#article",
+          "headline": "maeve join the bug club on the bill for bbc introducing live’s the sound bridge in bridgend",
+          "url": "https://sainbureau.com/press/2026-09-26-maeve-bbc-introducing-live-the-sound-bridge.html"
+        }
       ]
     },
     {
@@ -67,15 +91,31 @@
       "url": "https://sainbureau.com/maeve.html",
       "name": "maeve // sain bureau",
       "inLanguage": "en-GB",
-      "about": { "@id": "https://sainbureau.com/maeve.html#artist" },
-      "isPartOf": { "@id": "https://sainbureau.com/#website" },
-      "publisher": { "@id": "https://sainbureau.com/#org" }
+      "about": {
+        "@id": "https://sainbureau.com/maeve.html#artist"
+      },
+      "isPartOf": {
+        "@id": "https://sainbureau.com/#website"
+      },
+      "publisher": {
+        "@id": "https://sainbureau.com/#org"
+      }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "sain bureau", "item": "https://sainbureau.com/" },
-        { "@type": "ListItem", "position": 2, "name": "maeve", "item": "https://sainbureau.com/maeve.html" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "sain bureau",
+          "item": "https://sainbureau.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "maeve",
+          "item": "https://sainbureau.com/maeve.html"
+        }
       ]
     }
   ]
@@ -226,6 +266,7 @@
     background:linear-gradient(to bottom, rgba(12,12,10,0), rgba(12,12,10,.86) 110px);
     display:grid;
     grid-template-columns:minmax(0,1.9fr) repeat(3,minmax(0,1fr));
+    grid-template-areas:"bio listen links team" "bio press press .";
     gap:48px clamp(32px,4vw,64px);
     align-items:start;
     font-size:15px;
@@ -233,6 +274,7 @@
   .info h2{font-size:15px;font-weight:400;margin-bottom:22px;color:var(--muted)}
   .info h2 .date{margin-left:14px;font-size:12px;font-variant-numeric:tabular-nums}
   .bio p{line-height:1.62;max-width:60ch}
+  .info .bio{grid-area:bio}.listen{grid-area:listen}.links-wrap{grid-area:links}.team-wrap{grid-area:team}.press-wrap{grid-area:press;max-width:52ch}
   .bio p+p{margin-top:.9em}
 
   /* the section titles get the homepage's hand-drawn circle */
@@ -263,16 +305,20 @@
   .u{position:relative}
 
   .team{display:flex;flex-direction:column;gap:16px}
+  .press-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:16px}
+  .press-list time{display:block;color:var(--muted);font-size:12px;margin-bottom:2px}
+  .press-list a{line-height:1.45}
+  .all-press{font-size:13px;color:var(--muted)}
   .team .role{display:block;color:var(--muted);font-size:12px;margin-bottom:2px}
 
   @media (max-width:1100px){
-    .info{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+    .info{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"bio bio" "listen links" "press team"}
     .bio{grid-column:1 / -1}
   }
   @media (max-width:900px){
     .name{font-size:clamp(4.5rem,25vw,9rem)}
     .hero main{align-items:center}
-    .info{grid-template-columns:minmax(0,1fr);gap:48px}
+    .info{grid-template-columns:minmax(0,1fr);gap:48px;grid-template-areas:"bio" "listen" "links" "press" "team"}
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -343,6 +389,14 @@
     </ul>
   </div>
 
+  <div class="press-wrap">
+    <h2><span class="ring">press</span></h2>
+    <ul class="press-list">
+      <li><time datetime="2026-09-26">26/09/2026</time><a class="u" href="press/2026-09-26-maeve-bbc-introducing-live-the-sound-bridge.html">maeve join the bug club on the bill for bbc introducing live’s the sound bridge in bridgend</a></li>
+    </ul>
+    <a class="u all-press" href="press.html?artist=maeve">all maeve press</a>
+  </div>
+
   <div class="team-wrap">
     <h2><span class="ring">team</span></h2>
     <div class="team">
@@ -369,7 +423,11 @@
 
   function reveal(){ if (revealed) return; revealed = true; document.documentElement.classList.add("ready"); }
   function check(){ if (videoReady && fontReady) reveal(); }
-  function ready(){ vid.classList.add("on"); videoReady = true; check(); }
+  function ready(el){
+    var node = (el && el.nodeType === 1) ? el : vid;   // called from events too, which pass an event, not an element
+    node.classList.add("on"); videoReady = true; check();
+  }
+
   if (!fontReady) document.fonts.ready.then(function(){ fontReady = true; check(); });
   // a last resort so nobody is ever stuck on a pulsing logo (a dead connection, a blocked file)
   setTimeout(function(){ fontReady = true; videoReady = true; check(); }, 15000);
@@ -394,9 +452,9 @@
 
   if (!reduce){
     ["pointerdown", "keydown", "scroll", "touchstart", "wheel"].forEach(function(ev){
-      addEventListener(ev, function once(){ if (vid.paused && vid.src) vid.play().catch(function(){}); removeEventListener(ev, once); }, {passive:true});
+      addEventListener(ev, function once(){ if (vid.isConnected && vid.paused && vid.src) vid.play().catch(function(){}); removeEventListener(ev, once); }, {passive:true});
     });
-    document.addEventListener("visibilitychange", function(){ if (!document.hidden && vid.paused && vid.src) vid.play().catch(function(){}); });
+    document.addEventListener("visibilitychange", function(){ if (vid.isConnected && !document.hidden && vid.paused && vid.src) vid.play().catch(function(){}); });
   }
 
   /* ---------- first screen = exactly one screen, whatever the header's height ---------- */
