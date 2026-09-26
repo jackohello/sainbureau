@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sain bureau // press</title>
+    <link>https://sainbureau.com/press.html</link>
+    <atom:link href="https://sainbureau.com/press/feed.xml" rel="self" type="application/rss+xml" />
+    <description>press releases from sain bureau: maeve and tathan.</description>
+    <language>en-gb</language>
+    <item>
+      <title>maeve join the bug club on the bill for bbc introducing live’s the sound bridge in bridgend</title>
+      <link>https://sainbureau.com/press/2026-09-26-maeve-bbc-introducing-live-the-sound-bridge.html</link>
+      <guid isPermaLink="true">https://sainbureau.com/press/2026-09-26-maeve-bbc-introducing-live-the-sound-bridge.html</guid>
+      <pubDate>Sat, 26 Sep 2026 09:00:00 +0000</pubDate>
+      <description>the south wales six-piece play black cat in bridgend on friday 6 november, as bbc introducing, horizons / gorwelion and beacons cymru bring a day of new music talks and live sets to the town.</description>
+      <category>maeve</category>
+    </item>
+  </channel>
+</rss>
